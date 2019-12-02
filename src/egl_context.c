@@ -514,8 +514,15 @@ GLFWbool _glfwCreateContextEGL(_GLFWwindow* window,
                 mask |= EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT_KHR;
         }
 
-        if (ctxconfig->debug)
-            flags |= EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR;
+		if (ctxconfig->debug)
+		{
+			flags |= EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR;
+			if (ctxconfig->client == GLFW_OPENGL_ES_API)
+			{
+#define EGL_CONTEXT_WEBGL_COMPATIBILITY_ANGLE 0x33AC				
+				setAttrib(EGL_CONTEXT_WEBGL_COMPATIBILITY_ANGLE, GLFW_TRUE);
+			}
+		}
 
         if (ctxconfig->robustness)
         {
